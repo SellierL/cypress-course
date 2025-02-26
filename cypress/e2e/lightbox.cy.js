@@ -1,0 +1,120 @@
+/// <reference types="cypress" />
+
+describe('Lightbox Test', () => {
+    beforeEach(() => {
+        cy.visit('../../lightbox.html');
+    });
+
+    it('1. Ouvre la lightbox au clic sur l’image', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.get('#lightbox').should('be.visible');
+    });
+
+    it('2. Ferme la lightbox au clic en dehors', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+        cy.get('body').click(0, 0);
+        cy.dataCy('lightbox-container').should('not.be.visible');
+    });
+
+    it('3. Ajoute un "j’aime" et met à jour le compteur', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible'); 
+
+        cy.dataCy('like-button')
+        .scrollIntoView()
+        .should('be.visible')
+        .click();
+
+        cy.dataCy('likes-count').scrollIntoView().should('be.visible').invoke('text').then((text) => {
+            expect(parseInt(text.trim())).to.eq(1);
+        });
+
+        cy.dataCy('like-button').scrollIntoView().should('not.be.visible');
+        cy.dataCy('unlike-button').scrollIntoView().should('be.visible');
+    });
+
+    it('4. Supprime un "j’aime" et met à jour le compteur', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+    
+        cy.dataCy('like-button').scrollIntoView().should('be.visible').click();
+        cy.dataCy('unlike-button').scrollIntoView().should('be.visible').click();
+    
+        cy.dataCy('likes-count').scrollIntoView().should('be.visible').invoke('text').then((text) => {
+            expect(parseInt(text.trim())).to.eq(0);
+        });
+    
+        cy.dataCy('like-button').scrollIntoView().should('be.visible');
+        cy.dataCy('unlike-button').scrollIntoView().should('not.be.visible');
+    });
+
+    it('5. Ajoute un commentaire', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+    
+        cy.dataCy('comment-input').scrollIntoView().should('be.visible').click();
+
+        cy.dataCy('comment-input').type('Cypress is awesome!');
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+        cy.dataCy('comments-container').should('contain', 'Cypress is awesome!');
+    });
+
+    it('6. Empêche d’ajouter un commentaire vide', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+
+        cy.dataCy('comment-input').scrollIntoView().should('be.visible').click();
+
+        cy.dataCy('comment-input').clear();
+        cy.dataCy('publish-comment-button').should('be.disabled');
+    });
+
+    it('7. Cache et affiche les commentaires', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+
+        cy.dataCy('comment-input').scrollIntoView().should('be.visible').click();
+
+        cy.dataCy('comment-input').type('Cypress is awesome!');
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        cy.dataCy('comment-toggle').click();
+        cy.dataCy('comments-container').should('not.be.visible');
+        cy.dataCy('comment-toggle').click();
+        cy.dataCy('comments-container').should('be.visible');
+    });
+
+    it('8. Affiche le compteur de likes et de commentaires au survol de l’image', () => {
+        //Laisser un commentaire et un like
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Cypress is awesome!');
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+        cy.dataCy('like-button')
+        .scrollIntoView()
+        .should('be.visible')
+        .click();
+        cy.get('body').click(0, 0);
+
+        cy.dataCy('image-overlay').should('not.be.visible');
+    
+        cy.dataCy('lightbox-image').trigger('mouseover');
+    
+        cy.dataCy('image-overlay').should('be.visible');
+        cy.dataCy('likes-count').should('be.visible').invoke('text').then((text) => {
+            expect(parseInt(text.trim())).to.eq(1);
+        });
+        cy.dataCy('comments-count').should('be.visible').invoke('text').then((text) => {
+            expect(parseInt(text.trim())).to.eq(1);
+        });
+    
+        cy.get('body').click(0, 0);
+        cy.dataCy('image-overlay').should('not.be.visible');
+    });
+
+});

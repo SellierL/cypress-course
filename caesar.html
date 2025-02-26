@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: auto;
+        }
+        h2, p, label {
+            text-align: left;
+        }
+        input, textarea, button {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0b5ed7;
+        }
+        .result {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Caesar Cipher</h2>
+        <p>Vanilla JS</p>
+        <label for="shift">Cypher key</label>
+        <input type="number" id="shift" value="3" data-cy="cypher-key">
+        <textarea id="text" placeholder="Enter text..." data-cy="cypher-msg"></textarea>
+        <button id="encryptBtn" data-cy="cypher-btn">Cypher</button>
+        <p class="result" id="result" data-cy="cyber-result"></p>
+    </div>
+    
+    <script src="caesar.js"></script>
+</body>
+</html>
