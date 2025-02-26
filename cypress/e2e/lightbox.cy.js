@@ -114,6 +114,7 @@ describe('Lightbox Test', () => {
         });
     
         cy.get('body').click(0, 0);
+        //cy.dataCy('lightbox-image').trigger('mouseout');
         cy.dataCy('image-overlay').should('not.be.visible');
     });
 
