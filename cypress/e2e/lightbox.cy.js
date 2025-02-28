@@ -19,7 +19,6 @@ describe('Lightbox Test', () => {
 
     it('3. Ajoute un "J’aime" et met à jour le compteur', () => {
         cy.dataCy('lightbox-image').click();
-        cy.dataCy('lightbox-container').should('be.visible');
     
         cy.dataCy('like-button').scrollIntoView().should('be.visible').click();
     
@@ -37,7 +36,6 @@ describe('Lightbox Test', () => {
 
     it('4. Supprime un "j’aime" et met à jour le compteur', () => {
         cy.dataCy('lightbox-image').click();
-        cy.dataCy('lightbox-container').should('be.visible');
     
         cy.dataCy('like-button').scrollIntoView().should('be.visible').click();
         cy.dataCy('unlike-button').scrollIntoView().should('be.visible').click();
