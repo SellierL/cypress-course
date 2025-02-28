@@ -19,23 +19,26 @@ describe('Lightbox Test', () => {
         cy.dataCy('lightbox-container').should('not.be.visible');
     });
 
-    it('3. Ajoute un "j’aime" et met à jour le compteur', () => {
+    it('3. Ajoute un "J’aime" et met à jour le compteur', () => {
         cy.dataCy('lightbox-image').click();
-        cy.dataCy('lightbox-container').should('be.visible'); 
-
-        cy.dataCy('like-button')
-        .scrollIntoView()
-        .wait(500)
-        .should('be.visible')
-        .click();
-
-        cy.dataCy('likes-count').scrollIntoView().should('be.visible').invoke('text').then((text) => {
-            expect(parseInt(text.trim())).to.eq(1);
-        });
-        cy.wait(500);
-        cy.dataCy('like-button').scrollIntoView().should('not.be.visible');
-        cy.dataCy('unlike-button').scrollIntoView().should('be.visible');
+        cy.dataCy('lightbox-container').should('be.visible');
+    
+        // S'assurer que l'overlay devient visible avant d'interagir avec le bouton
+        cy.dataCy('image-overlay').should('be.visible');
+    
+        cy.dataCy('like-button').scrollIntoView().should('be.visible').click();
+    
+        cy.dataCy('likes-count')
+            .should('be.visible')
+            .invoke('text')
+            .then((text) => {
+                expect(parseInt(text.trim())).to.eq(1);
+            });
+    
+        cy.dataCy('like-button').should('not.be.visible');
+        cy.dataCy('unlike-button').should('be.visible');
     });
+    
 
     it('4. Supprime un "j’aime" et met à jour le compteur', () => {
         cy.dataCy('lightbox-image').click();
