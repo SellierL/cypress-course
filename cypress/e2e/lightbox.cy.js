@@ -12,8 +12,10 @@ describe('Lightbox Test', () => {
 
     it('2. Ferme la lightbox au clic en dehors', () => {
         cy.dataCy('lightbox-image').click();
+        cy.wait(500);
         cy.dataCy('lightbox-container').should('be.visible');
         cy.get('body').click(0, 0);
+        cy.wait(500);
         cy.dataCy('lightbox-container').should('not.be.visible');
     });
 
@@ -23,13 +25,14 @@ describe('Lightbox Test', () => {
 
         cy.dataCy('like-button')
         .scrollIntoView()
+        .wait(500)
         .should('be.visible')
         .click();
 
         cy.dataCy('likes-count').scrollIntoView().should('be.visible').invoke('text').then((text) => {
             expect(parseInt(text.trim())).to.eq(1);
         });
-
+        cy.wait(500);
         cy.dataCy('like-button').scrollIntoView().should('not.be.visible');
         cy.dataCy('unlike-button').scrollIntoView().should('be.visible');
     });
