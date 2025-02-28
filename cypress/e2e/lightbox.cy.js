@@ -118,4 +118,103 @@ describe('Lightbox Test', () => {
         cy.dataCy('image-overlay').should('not.be.visible');
     });
 
+    it("9. Tester le singulier/pluriel en fonction des commentaires", () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+
+        // Comment 1
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Awesome!');
+
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        cy.dataCy('comment-toggle')
+        .invoke('text')
+        .then((text) => {
+            expect(text.trim()).to.equal('Hide 1 comment');
+        });
+
+        cy.dataCy('comment-toggle').click();
+        cy.dataCy('comment-toggle')
+        .invoke('text')
+        .then((text) => {
+            expect(text.trim()).to.equal('Show 1 comment');
+        });
+
+        // Comment 2
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Magic!');
+
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        cy.dataCy('comment-toggle')
+        .invoke('text')
+        .then((text) => {
+            expect(text.trim()).to.equal('Hide 2 comments');
+        });
+
+        cy.dataCy('comment-toggle').click();
+        cy.dataCy('comment-toggle')
+        .invoke('text')
+        .then((text) => {
+            expect(text.trim()).to.equal('Show 2 comments');
+        });
+        
+        // Overlay counter
+        cy.get('body').click(0, 0);
+        cy.dataCy('lightbox-image').trigger('mouseover');
+        cy.dataCy('comments-count').should('be.visible').invoke('text').then((text) => {
+            expect(parseInt(text.trim())).to.eq(2);
+        });
+    });
+
+    it.only('10. Ajouter 3 commentaires et supprimer seulement le deuxième', () => {
+        cy.dataCy('lightbox-image').click();
+        cy.dataCy('lightbox-container').should('be.visible');
+
+        // Comment 1
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Awesome!');
+
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        // Comment 2
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Magic!');
+
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        // Comment 3
+        cy.dataCy('comment-input')
+        .scrollIntoView()
+        .should('be.visible')
+        .click()
+        .type('Damn!');
+
+        cy.dataCy('publish-comment-button').should('not.be.disabled').click();
+
+        // Supprimer le deuxième commentaire
+        cy.dataCy('delete-comment-svg-1').click();
+
+        // Vérifier que le deuxième commentaire n'est plus présent
+        cy.dataCy('comments-container').should('not.contain', 'Magic!');
+        
+        // Vérifier que les autres commentaires sont toujours là
+        cy.dataCy('comments-container').should('contain', 'Awesome!');
+        cy.dataCy('comments-container').should('contain', 'Damn!');
+
+    });
+
 });
