@@ -174,7 +174,7 @@ describe('Lightbox Test', () => {
         });
     });
 
-    it.only('10. Ajouter 3 commentaires et supprimer seulement le deuxième', () => {
+    it('10. Ajouter 3 commentaires et supprimer seulement le deuxième', () => {
         cy.dataCy('lightbox-image').click();
         cy.dataCy('lightbox-container').should('be.visible');
 
@@ -210,7 +210,7 @@ describe('Lightbox Test', () => {
 
         // Vérifier que le deuxième commentaire n'est plus présent
         cy.dataCy('comments-container').should('not.contain', 'Magic!');
-        
+
         // Vérifier que les autres commentaires sont toujours là
         cy.dataCy('comments-container').should('contain', 'Awesome!');
         cy.dataCy('comments-container').should('contain', 'Damn!');
