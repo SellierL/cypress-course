@@ -214,7 +214,6 @@ describe('Lightbox Test', () => {
         // Vérifier que les autres commentaires sont toujours là
         cy.dataCy('comments-container').should('contain', 'Awesome!');
         cy.dataCy('comments-container').should('contain', 'Damn!');
-
     });
 
 });
