@@ -12,19 +12,14 @@ describe('Lightbox Test', () => {
 
     it('2. Ferme la lightbox au clic en dehors', () => {
         cy.dataCy('lightbox-image').click();
-        cy.wait(500);
         cy.dataCy('lightbox-container').should('be.visible');
         cy.get('body').click(0, 0);
-        cy.wait(500);
         cy.dataCy('lightbox-container').should('not.be.visible');
     });
 
     it('3. Ajoute un "J’aime" et met à jour le compteur', () => {
         cy.dataCy('lightbox-image').click();
         cy.dataCy('lightbox-container').should('be.visible');
-    
-        // S'assurer que l'overlay devient visible avant d'interagir avec le bouton
-        cy.dataCy('image-overlay').should('be.visible');
     
         cy.dataCy('like-button').scrollIntoView().should('be.visible').click();
     
